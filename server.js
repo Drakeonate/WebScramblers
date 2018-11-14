@@ -22,3 +22,19 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('logins.db');
+
+
+//Sessionvariablen
+const session = require('express-session');
+app.use(session({
+    secret: 'example',
+    resave: false,
+    saveUninitialized: true
+}))
+
+
+
+app.get('/profil',(req,res)=>{
+    res.render('profil');
+
+});
