@@ -39,7 +39,9 @@ app.use(session({
     saveUninitialized: true
 }))
 
-app.get('/login', (req, res) => {
-	res.render('login');
+
+
+app.get('/login', function(req,rep) {
+   rep.sendFile(__dirname + '/login.html'); 
 });
 
