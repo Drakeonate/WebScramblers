@@ -23,7 +23,6 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 // Vorher npm install sqlite3 --save installieren
 const sqlite3 = require('sqlite3').verbose();
-<<<<<<< HEAD
 let db = new sqlite3.Database('logins.db',(error)=>{
          if(error){
          console.error(error.message);
@@ -121,7 +120,6 @@ app.get('/logout', function (req, res){
 
 
 
-=======
 let db = new sqlite3.Database('logins.db');
 
 
@@ -139,4 +137,4 @@ app.get('/profil',(req,res)=>{
     res.render('profil');
 
 });
->>>>>>> 2ba5d19872910fee1979c8201b2a751ed2ba60fd
+
