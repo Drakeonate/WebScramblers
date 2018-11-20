@@ -21,7 +21,14 @@ app.set('view engine', 'ejs');
 
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('logins.db');
+//let db = new sqlite3.Database('logins.db');
+let db = new sqlite3.Database('logins.db',(error)=>{
+    if(error){
+        console.error(error.message);
+    }else{
+        console.log('Connected to the database.');
+    }
+});
 
 
 //Sessionvariablen
@@ -32,9 +39,7 @@ app.use(session({
     saveUninitialized: true
 }))
 
-
-
-app.get('/profil',(req,res)=>{
-    res.render('profil');
-
+app.get('/login', (req, res) => {
+	res.render('login');
 });
+
