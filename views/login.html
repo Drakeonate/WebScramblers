@@ -42,7 +42,7 @@
 	<!-- Icomoon Icon Fonts-->
 	<link rel="stylesheet" href="css/icomoon.css">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
 
 	<!-- Magnific Popup -->
 	<link rel="stylesheet" href="css/magnific-popup.css">
@@ -138,11 +138,11 @@
 							<h2 class="pricing-plan">Login</h2>
 					
 							<ul class="classes">
-								<form action="anmelden" method="post" id="formId">
+								<form action="anmelden" method="post">
 									Benutzername: <input type="text" name="user"> <br>
 									Passwort: <input type="password" name="password"> <br>
 									
-									<input type="submit" value="anmelden" name="submit" id="submitButton">
+									<input type="submit" value="anmelden" name="submit">
 								</form>
 								
 							</div>
@@ -180,7 +180,7 @@
 	<!-- jQuery Easing -->
 	<script src="js/jquery.easing.1.3.js"></script>
 	<!-- Bootstrap -->
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<!-- Waypoints -->
 	<script src="js/jquery.waypoints.min.js"></script>
 	<!-- Stellar Parallax -->
@@ -194,14 +194,7 @@
 	<script src="js/magnific-popup-options.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
-	<script type="text/javascript">
-	$("#formId").submit(function (event) {
-    $.post('/anmelden', $("#formId").serialize(), function (data) {
-       console.log(data) //data is the response from the backend
-    });
-    event.preventDefault();
-  });
-	</script>
+
 	</body>
 </html>
 

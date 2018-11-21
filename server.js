@@ -11,7 +11,6 @@ app.get('/' , function(req, res) {
 
 // z.B. http://localhost:3000/image.html
 app.use(express.static(__dirname + '/public'));
-
 const bodyParser= require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -22,7 +21,7 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 //let db = new sqlite3.Database('logins.db');
-let db = new sqlite3.Database('logins.db',(error)=>{
+let db = new sqlite3.Database('login.db',(error)=>{
     if(error){
         console.error(error.message);
     }else{
@@ -45,3 +44,68 @@ app.get('/login', function(req,rep) {
    rep.sendFile(__dirname + '/login.html'); 
 });
 
+app.post('/anmelden', function(req,res){
+	let user = req.body["user"];
+    let password = req.body["password"];
+
+    console.log(user);
+    
+    //Überprüft, ob der User in unserer Datenbank gespreichert ist
+	db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
+            console.log("Password: " + row.PASSWORD);
+        if(row != undefined){
+			//Wenn ja, schau ob das Password richtig ist
+			if(password == row.PASSWORD){
+				//hat geklappt
+				// Sessionvariable setzen
+                req.session['user'] = user;
+                console.log("User Found and password right");
+				res.redirect('/success');
+//				res.render('success', {'user': user});
+			}else{
+				//hat nicht gklappt, weil Password falsch
+				res.render('error');
+			}
+		}else{
+			//hat es nicht geklappt, weil kein User mit dem namen
+			res.render('error');
+		}
+		//Falls ein Fehler auftritt in der Abfrage, gebe ihn aus
+		if(error){
+				console.error(error.message);
+		}
+	});
+});
+
+app.get('/registration', (req, res)=>{
+	res.sendFile(__dirname + "/registration.html");
+});
+
+app.post('/registrierung', (req,res)=>{
+	//ABfrage von user input und abspeichern in variablen
+	const user = req.body["user"];
+    const pw = req.body["password"];
+    console.log(user);
+    
+//Fügt den User in die Datenbank ein
+let found = false;
+db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
+    found = true;
+    console.log("found user");
+});
+    if(!found) {
+	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
+		if(error){
+			console.error(error.message);
+        }
+        console.log("User now in database");
+	});
+} else {
+	
+}
+	
+    //Nach der Registrierung, wird man zu der Login Seite geführt
+    // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
+	res.redirect('login');
+
+});
