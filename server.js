@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
-
-
+const path = require('path');
+const http = require('http');
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/' , function(req, res) {
     res.send('Hello World')
@@ -34,16 +35,14 @@ app.use(session({
     secret: 'example',
     resave: false,
     saveUninitialized: true
-}))
-
-
+}));
 
 app.get('/index', function(req,rep) {
    rep.sendFile(__dirname + '/index.html');
 });
 
 app.get('/anzeigeErstellen', function (req, rep) {
-    rep.sendFile(__dirname + '/anzeigeErstellen.html');
+    rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
 });
 
 app.post('/erstellen', function (req, rep) {
