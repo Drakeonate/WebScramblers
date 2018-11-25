@@ -2,7 +2,14 @@
     height:200px;
     font-size:14pt;
 }
-
+.submitButtonSearch {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
 /* The sidebar menu */
 .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */

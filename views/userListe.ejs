@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
     <form id="sucheId">
 
       <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
-        <a href="userListe"  style="color: #6c757d;text-align: left"> Suche</a>
+        <a   style="color: #6c757d;text-align: left"> Suche</a>
       </button>
       <input id="textId" name="text" type="text">
     </form>>
@@ -86,18 +87,16 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Anzeige Erstellen</h2>
+              <h2 class="display-4">Users</h2>
 
-              <form id="formId">
-                <p class="display-4">Titel<br> </p>
-                <input type="text" id="titelId" name="titel" >
-                <span><br>Text<br> </span>
-                <textarea name="content" form="formId" rows="4" cols="60" id="contenId">Text</textarea>
-                <span><br>Roles (Seperate with ',')<br> </span>
-                <textarea name="role" form="formId" rows="4" cols="60" id="roleId">Text</textarea>
-                <button type="submit" id="submitButton">Submit</button>
-              </form>
+              <ul>
+                <%if(users != null) {
 
+                users.forEach(function(user) {
+                  console.log(user);%>
+                <li><%= user %></li>
+                <% });} %>
+              </ul>
               <p></p>
             </div>
           </div>
@@ -122,17 +121,11 @@
 
 
   <script>
-      $("#formId").submit(function (event) {
-          $.post('/erstellen', $("#formId").serialize(), function (data) {
-              console.log(data) //data is the response from the backend
-          });
-          event.preventDefault();
-      });
 
       $("#sucheId").submit(function (event) {
           $.post('/users', $("#sucheId").serialize(), function (data) {
               console.log(data) //data is the response from the backend
-              console.log('Redirecting');
+              location.reload();
           });
           event.preventDefault();
       });

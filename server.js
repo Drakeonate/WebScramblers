@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const http = require('http');
+app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/' , function(req, res) {
@@ -66,4 +67,19 @@ app.post('/erstellen', function (req, rep) {
 
 app.listen(3000, function() {
     console.log('listening on 3000')
+});
+let users;
+app.post('/users', function (req, rep) {
+    const role = req.body['text'];
+    //const list = document.getElementById('userListId');
+    console.log(role);
+    users = ['Ed', 'pye', 'joshi'];
+    rep.redirect('/userListe');
+});
+
+app.get('/userListe', function (req, rep) {
+    rep.render('userListe', {
+        users: users
+    });
+    console.log('rednering');
 });
