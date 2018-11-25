@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
 
-app.listen(3000, function() {
-    console.log('listening on 3000')
-});
+
 
 app.get('/' , function(req, res) {
     res.send('Hello World')
@@ -21,8 +19,7 @@ app.set('view engine', 'ejs');
 
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
-//let db = new sqlite3.Database('logins.db');
-let db = new sqlite3.Database('logins.db',(error)=>{
+let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
     if(error){
         console.error(error.message);
     }else{
@@ -41,7 +38,33 @@ app.use(session({
 
 
 
-app.get('/login', function(req,rep) {
-   rep.sendFile(__dirname + '/login.html'); 
+app.get('/index', function(req,rep) {
+   rep.sendFile(__dirname + '/index.html');
 });
 
+app.get('/anzeigeErstellen', function (req, rep) {
+    rep.sendFile(__dirname + '/anzeigeErstellen.html');
+});
+
+app.post('/erstellen', function (req, rep) {
+    const content = req.body["content"];
+    const titel = req.body["titel"];
+    const roles = req.body["role"];
+    console.log(content);
+    console.log(titel);
+    console.log(roles);
+
+
+    dbAnzeigen.run(`INSERT INTO ANZEIGEN (TITEL, INHALT, ROLLE) VALUES ('${titel}','${content}', '${roles}')`,(error)=>{
+        if(error){
+            console.error(error.message);
+        } else {
+            console.log('Wrote to database');
+        }
+    });
+
+});
+
+app.listen(3000, function() {
+    console.log('listening on 3000')
+});
