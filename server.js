@@ -74,6 +74,7 @@ app.post('/users', function (req, rep) {
     //const list = document.getElementById('userListId');
     console.log(role);
     users = ['Ed', 'pye', 'joshi'];
+    // Users have to be transfered from the databank with name, role and user page
     rep.redirect('/userListe');
 });
 
