@@ -21,14 +21,7 @@ app.set('view engine', 'ejs');
 
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
-//let db = new sqlite3.Database('logins.db');
-let db = new sqlite3.Database('logins.db',(error)=>{
-    if(error){
-        console.error(error.message);
-    }else{
-        console.log('Connected to the database.');
-    }
-});
+let db = new sqlite3.Database('logins.db');
 
 
 //Sessionvariablen
@@ -41,7 +34,7 @@ app.use(session({
 
 
 
-app.get('/login', function(req,rep) {
-   rep.sendFile(__dirname + '/login.html'); 
-});
+app.get('/profil',(req,res)=>{
+    res.render('profil');
 
+});
