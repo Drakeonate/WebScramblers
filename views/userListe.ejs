@@ -27,8 +27,16 @@
   </head>
   <!-- Side navigation -->
   <div class="sidenav">
-   
-   
+    <a href="#">About</a>
+    <a href="#">Anzeige<br>Erstellen</a>
+    <a href="#">Anzeigen</a>
+    <form id="sucheId">
+
+      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
+        <a   style="color: #6c757d;text-align: left"> Suche</a>
+      </button>
+      <input id="textId" name="text" type="text">
+    </form>>
   </div>
 
   <!-- Page content -->
@@ -44,9 +52,11 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-				<a href="/login">Log In</a>
-			  </li>
-           </li>
+              <a href="/register">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a href="/login">Log In</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -77,17 +87,16 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Registration</h2>
+              <h2 class="display-4">Users</h2>
 
-              <form id="formId">
-                <form action="registrierung" method="post">
-					Benutzername: <input type="text" name="user"> <br>
-					Passwort: <input type="password" name="password"> <br>
-		
-					<input type="submit" value="Registrierung" name="submit">
-			</form>
-              </form>
+              <ul>
+                <%if(users != null) {
 
+                users.forEach(function(user) {
+                  console.log(user);%>
+                <li><%= user %></li>
+                <% });} %>
+              </ul>
               <p></p>
             </div>
           </div>
@@ -110,12 +119,15 @@
   </body>
 
 
-  <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
-	   console.log(data) //data is the response from the backend
-	});
-	event.preventDefault();
-  });
-	</script>
+
+  <script>
+
+      $("#sucheId").submit(function (event) {
+          $.post('/users', $("#sucheId").serialize(), function (data) {
+              console.log(data) //data is the response from the backend
+              location.reload();
+          });
+          event.preventDefault();
+      });
+  </script>
 </html>

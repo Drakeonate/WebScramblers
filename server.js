@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-
-app.listen(3000, function() {
-    console.log('listening on 3000')
-});
+const path = require('path');
+const http = require('http');
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/' , function(req, res) {
     res.send('Hello World')
@@ -20,8 +20,12 @@ app.set('view engine', 'ejs');
 
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
+
 //let db = new sqlite3.Database('logins.db');
 let db = new sqlite3.Database('login.db',(error)=>{
+
+let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
+
     if(error){
         console.error(error.message);
     }else{
@@ -36,13 +40,48 @@ app.use(session({
     secret: 'example',
     resave: false,
     saveUninitialized: true
-}))
+}));
 
-
-
-app.get('/login', function(req,rep) {
-   rep.sendFile(__dirname + '/login.html'); 
+app.get('/index', function(req,rep) {
+   rep.sendFile(__dirname + '/index.html');
 });
+
+app.get('/anzeigeErstellen', function (req, rep) {
+    rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
+});
+
+app.post('/erstellen', function (req, rep) {
+    const content = req.body["content"];
+    const titel = req.body["titel"];
+    const roles = req.body["role"];
+    console.log(content);
+    console.log(titel);
+    console.log(roles);
+
+
+    dbAnzeigen.run(`INSERT INTO ANZEIGEN (TITEL, INHALT, ROLLE) VALUES ('${titel}','${content}', '${roles}')`,(error)=>{
+        if(error){
+            console.error(error.message);
+        } else {
+            console.log('Wrote to database');
+        }
+    });
+
+});
+
+app.listen(3000, function() {
+    console.log('listening on 3000')
+});
+let users;
+app.post('/users', function (req, rep) {
+    const role = req.body['text'];
+    //const list = document.getElementById('userListId');
+    console.log(role);
+    users = ['Ed', 'pye', 'joshi'];
+    // Users have to be transfered from the databank with name, role and user page
+    rep.redirect('/userListe');
+});
+
 
 app.post('/anmelden', function(req,res){
 	let user = req.body["user"];
@@ -108,4 +147,10 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
 	res.redirect('login');
 
-});
+
+app.get('/userListe', function (req, rep) {
+    rep.render('userListe', {
+        users: users
+    });
+    console.log('rednering');
+

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,8 +26,16 @@
   </head>
   <!-- Side navigation -->
   <div class="sidenav">
-   
-   
+    <a href="#">About</a>
+    <a href="#">Anzeige<br>Erstellen</a>
+    <a href="#">Anzeigen</a>
+    <form id="sucheId">
+
+      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
+        <a href="userListe"  style="color: #6c757d;text-align: left"> Suche</a>
+      </button>
+      <input id="textId" name="text" type="text">
+    </form>>
   </div>
 
   <!-- Page content -->
@@ -44,9 +51,11 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-				<a href="/login">Log In</a>
-			  </li>
-           </li>
+              <a href="/register">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a href="/login">Log In</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -77,15 +86,16 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Registration</h2>
+              <h2 class="display-4">Anzeige Erstellen</h2>
 
               <form id="formId">
-                <form action="registrierung" method="post">
-					Benutzername: <input type="text" name="user"> <br>
-					Passwort: <input type="password" name="password"> <br>
-		
-					<input type="submit" value="Registrierung" name="submit">
-			</form>
+                <p class="display-4">Titel<br> </p>
+                <input type="text" id="titelId" name="titel" >
+                <span><br>Text<br> </span>
+                <textarea name="content" form="formId" rows="4" cols="60" id="contenId">Text</textarea>
+                <span><br>Roles (Seperate with ',')<br> </span>
+                <textarea name="role" form="formId" rows="4" cols="60" id="roleId">Text</textarea>
+                <button type="submit" id="submitButton">Submit</button>
               </form>
 
               <p></p>
@@ -110,12 +120,21 @@
   </body>
 
 
-  <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
-	   console.log(data) //data is the response from the backend
-	});
-	event.preventDefault();
-  });
-	</script>
+
+  <script>
+      $("#formId").submit(function (event) {
+          $.post('/erstellen', $("#formId").serialize(), function (data) {
+              console.log(data) //data is the response from the backend
+          });
+          event.preventDefault();
+      });
+
+      $("#sucheId").submit(function (event) {
+          $.post('/users', $("#sucheId").serialize(), function (data) {
+              console.log(data) //data is the response from the backend
+              console.log('Redirecting');
+          });
+          event.preventDefault();
+      });
+  </script>
 </html>
