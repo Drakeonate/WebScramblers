@@ -26,8 +26,11 @@
   </head>
   <!-- Side navigation -->
   <div class="sidenav">
-   
-   
+    <form id="sucheId">
+
+      
+      
+    </form>>
   </div>
 
   <!-- Page content -->
@@ -43,9 +46,11 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-				<a href="/login">Log In</a>
-			  </li>
-           </li>
+              
+            </li>
+            <li class="nav-item">
+              <a href="/profil">Profil Anzeigen</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -76,16 +81,24 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Error</h2>
+              <h2 class="display-4">Profil</h2>
 
               <form id="formId">
-				<body>
-					Fehler: Anmeldung fehlgeschlagen<br>
-                     <a href="/login">Neuer Versuch</a>
-                     <a href="forgot_password.html">Passwort vergessen</a>
-				</body>
-			</form>
-              </form>
+                <table>
+                  <% for(var i = 0; i < rows.length; i++) { %>
+                    <tr>
+                      <td> <%= rows[i].name</td
+                      <td> <%= rows[i].alter</td>>
+                      <td> <%= rows[i].semester</td>
+                      <td> <%= rows[i].studiengang</td>
+                      <td> <%= rows[i].können</td>
+                      <td> <%= rows[i].hobby</td>
+                    </tr>
+                <%}%>
+                </table>
+                    <a href=<"profil">Profil bearbeiten </a>
+
+                  </form>
 
               <p></p>
             </div>
@@ -109,12 +122,14 @@
   </body>
 
 
-  <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
-	   console.log(data) //data is the response from the backend
-	});
-	event.preventDefault();
+
+  <script>
+      
+      $("#formId").submit(function (event) {
+    $.post('/person', $("#formId").serialize(), function (data) {
+       console.log(data) //data is the response from the backend
+    });
+    event.preventDefault();
   });
-	</script>
+  </script>
 </html>

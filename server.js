@@ -78,11 +78,49 @@ app.post('/erstellen', function (req, rep) {
     console.log(titel);
     console.log(roles);
 
-app.get('/profil',(req,res)=>{
-    res.render('profil');
+app.get('/profil', function(req,rep) {
+    rep.sendfile(__dirname+ '/profil.html');
 
 });
 
+app.get(['/endprofil'], function(req,res) {
+    const sql= 'SELECT * FROM profil';
+    console.log(sql);
+    login.db(sql, function(err, rows){
+        if(err){
+            console.log(err.message);
+        
+        }
+        else{
+            console.log(rows);
+            res.render('endprofil',('rows' : rows || []});
+
+        }
+    })
+});
+
+app.post('/profilerstellen', function(req,res) {
+    const profilname = req.body["profilname"];
+    const profilalter = req.body["profilalter"];
+    const profilsemester = req.body["profilsemester"];
+    const profilstudiengang = req.body["profilstudiengang"];
+    const profilkönnen = req.body["profilkönnen"];
+    const profilhobby = req.body["profilhobby"];
+    console.log(profilname);
+    console.log(profilalter);
+    console.log(profilsemester);
+    console.log(profilstudiengang);
+    console.log(profilkönnen);
+    console.log(profilhobby);
+
+    dblogin.run('INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter})',
+    console.log(sql);
+    db.run(sql, function(err){
+        res.redirect("/profil");
+    }
+
+    });
+});
 
 app.get('/index', function(req,rep) {
    rep.sendFile(__dirname + '/index.html');
