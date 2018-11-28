@@ -33,10 +33,16 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 
+let db = new sqlite3.Database('logins.db');
+
+let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
+
+
 //let db = new sqlite3.Database('logins.db');
 let db = new sqlite3.Database('login.db',(error)=>{
 
 let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
+
 
     if(error){
         console.error(error.message);
@@ -46,6 +52,7 @@ let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
 });
 
 
+
 //Sessionvariablen
 const session = require('express-session');
 app.use(session({
@@ -53,6 +60,29 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+
+app.get('/index', function(req,rep) {
+   rep.sendFile(__dirname + '/index.html');
+});
+
+app.get('/anzeigeErstellen', function (req, rep) {
+    rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
+});
+
+app.post('/erstellen', function (req, rep) {
+    const content = req.body["content"];
+    const titel = req.body["titel"];
+    const roles = req.body["role"];
+    console.log(content);
+    console.log(titel);
+    console.log(roles);
+
+app.get('/profil',(req,res)=>{
+    res.render('profil');
+
+});
+
 
 app.get('/index', function(req,rep) {
    rep.sendFile(__dirname + '/index.html');
@@ -167,5 +197,7 @@ app.get('/userListe', function (req, rep) {
         users: users
     });
 
+
     console.log('rednering');
 });
+
