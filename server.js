@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const http = require('http');
+const nodemailer = require("nodemailer");
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -9,6 +10,17 @@ app.get('/' , function(req, res) {
     res.send('Hello World')
 });
 
+nodemailer.createTestAccount((err, account) => {
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: account.user, // generated ethereal user
+            pass: account.pass // generated ethereal password
+        }
+    });
 // z.B. http://localhost:3000/image.html
 app.use(express.static(__dirname + '/public'));
 const bodyParser= require('body-parser');
@@ -82,6 +94,9 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
+app.get('/login', (req, res)=>{
+    res.sendFile(__dirname + "/login.html");
+});
 
 app.post('/anmelden', function(req,res){
 	let user = req.body["user"];
@@ -145,12 +160,12 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
 	
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
-	res.redirect('login');
-
+	
 
 app.get('/userListe', function (req, rep) {
     rep.render('userListe', {
         users: users
     });
-    console.log('rednering');
 
+    console.log('rednering');
+});
