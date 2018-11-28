@@ -38,21 +38,25 @@
 	<link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800" rel="stylesheet">
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="animate.css">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="icomoon.css">
 	<!-- Bootstrap  -->
-	<link rel="stylesheet" href="css/bootstrap.css">
+<<<<<<< HEAD
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+=======
+	<link rel="stylesheet" href="bootstrap.css">
+>>>>>>> e01ccf25a754d554e6cf05fe6c0e744bd548ecc9
 
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="css/magnific-popup.css">
+	<link rel="stylesheet" href="magnific-popup.css">
 
 	<!-- Owl Carousel  -->
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="owl.carousel.min.css">
+	<link rel="stylesheet" href="owl.theme.default.min.css">
 
 	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="style.css">
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -138,11 +142,11 @@
 							<h2 class="pricing-plan">Login</h2>
 					
 							<ul class="classes">
-								<form action="anmelden" method="post">
+								<form action="anmelden" method="post" id="formId">
 									Benutzername: <input type="text" name="user"> <br>
 									Passwort: <input type="password" name="password"> <br>
 									
-									<input type="submit" value="anmelden" name="submit">
+									<input type="submit" value="anmelden" name="submit" id="submitButton">
 								</form>
 								
 							</div>
@@ -180,7 +184,7 @@
 	<!-- jQuery Easing -->
 	<script src="js/jquery.easing.1.3.js"></script>
 	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<!-- Waypoints -->
 	<script src="js/jquery.waypoints.min.js"></script>
 	<!-- Stellar Parallax -->
@@ -194,7 +198,14 @@
 	<script src="js/magnific-popup-options.js"></script>
 	<!-- Main -->
 	<script src="js/main.js"></script>
-
+	<script type="text/javascript">
+	$("#formId").submit(function (event) {
+    $.post('/anmelden', $("#formId").serialize(), function (data) {
+       console.log(data) //data is the response from the backend
+    });
+    event.preventDefault();
+  });
+	</script>
 	</body>
 </html>
 

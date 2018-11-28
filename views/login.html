@@ -44,8 +44,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-				<a href="/login">Log In</a>
-			  </li>
+              <a href="/register">Sign Up</a>
            </li>
           </ul>
         </div>
@@ -77,15 +76,20 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Registration</h2>
+              <h2 class="display-4">Login</h2>
 
               <form id="formId">
-                <form action="registrierung" method="post">
+                <form action="anmelden" method="post" id="formId">
 					Benutzername: <input type="text" name="user"> <br>
 					Passwort: <input type="password" name="password"> <br>
-		
-					<input type="submit" value="Registrierung" name="submit">
-			</form>
+					
+					<input type="submit" value="anmelden" name="submit" id="submitButton">
+			<div class="row form-group" style="margin: 0px 10px 20px 10px;">
+				<div class="col-xs-12">
+					<input type="submit" name="forgot" id="sub" class="form-control" value="Forgot Password">
+				</div>
+			</div>
+				</form>
               </form>
 
               <p></p>
@@ -110,12 +114,13 @@
   </body>
 
 
-  <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
-	   console.log(data) //data is the response from the backend
-	});
-	event.preventDefault();
+
+  <script>
+      $("#formId").submit(function (event) {
+    $.post('/anmelden', $("#formId").serialize(), function (data) {
+       console.log(data) //data is the response from the backend
+    });
+    event.preventDefault();
   });
-	</script>
+  </script>
 </html>
