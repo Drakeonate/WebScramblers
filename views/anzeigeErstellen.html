@@ -88,13 +88,13 @@
 
               <h2 class="display-4">Anzeige Erstellen</h2>
 
-              <form id="formId">
+              <form id="anzegeId">
                 <p class="display-4">Titel<br> </p>
                 <input type="text" id="titelId" name="titel" >
                 <span><br>Text<br> </span>
-                <textarea name="content" form="formId" rows="4" cols="60" id="contenId">Text</textarea>
+                <textarea name="content" form="anzegeId" rows="4" cols="60" id="contenId">Text</textarea>
                 <span><br>Roles (Seperate with ',')<br> </span>
-                <textarea name="role" form="formId" rows="4" cols="60" id="roleId">Text</textarea>
+                <textarea name="role" form="anzegeId" rows="4" cols="60" id="roleId">Text</textarea>
                 <button type="submit" id="submitButton">Submit</button>
               </form>
 
@@ -120,21 +120,24 @@
   </body>
 
 
-
+<script>
+    $("#anzegeId").submit(function (event) {
+        $.post('/erstellen2', $("#anzegeId").serialize(), function (data) {
+            console.log(data); //data is the response from the backend
+            console.log('SHT');
+        });
+        event.preventDefault();
+    });
+  </script>
   <script>
-      $("#formId").submit(function (event) {
-          $.post('/erstellen', $("#formId").serialize(), function (data) {
-              console.log(data) //data is the response from the backend
-          });
-          event.preventDefault();
-      });
-
       $("#sucheId").submit(function (event) {
           $.post('/users', $("#sucheId").serialize(), function (data) {
-              console.log(data) //data is the response from the backend
+              console.log(data);//data is the response from the backend
               console.log('Redirecting');
           });
           event.preventDefault();
       });
+
+
   </script>
 </html>

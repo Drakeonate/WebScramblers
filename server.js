@@ -32,7 +32,7 @@ nodemailer.createTestAccount((err, account) => {
         to: 'pyesonoo@hotmail.de',
         subject: 'Password',
         text: 'Moin Pyeson dein Passwort lautet hallo',
-        html: 'forgot_password</b>'
+        html: 'Dein Passwort lautet poseidon</b>'
 
     };
 
@@ -134,7 +134,7 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter})','${profilsemester}')`,(error)=>{ 
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilkönnen}', '${profilhobby}')`,(error)=>{ 
         if(error){
             console.error(error.message);
         } else {
@@ -204,8 +204,9 @@ app.post('/anmelden', function(req,res){
     
     //Überprüft, ob der User in unserer Datenbank gespreichert ist
 	db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
-            console.log("Password: " + row.PASSWORD);
+            
         if(row != undefined){
+            console.log("Password: " + row.PASSWORD);
 			//Wenn ja, schau ob das Password richtig ist
 			if(password == row.PASSWORD){
 				//hat geklappt
@@ -242,9 +243,10 @@ app.post('/registrierung', (req,res)=>{
 //Fügt den User in die Datenbank ein
 let found = false;
 db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
-    found = true;
-    console.log("found user");
-
+    if (row !=undefined){
+        found = true;
+        console.log("found user");
+    }
     if(!found) {
 	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
 		if(error){
@@ -254,6 +256,7 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
 	});
     } else { }
 });
+    	res.redirect('login');
 });
 	
     //Nach der Registrierung, wird man zu der Login Seite geführt
