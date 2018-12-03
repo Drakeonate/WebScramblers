@@ -124,14 +124,13 @@ app.get('/anzeigeErstellen', function (req, rep) {
     rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
 });
 
-app.post('/erstellen', function (req, rep) {
+app.post('/erstellen2', function (req, rep) {
     const content = req.body["content"];
     const titel = req.body["titel"];
     const roles = req.body["role"];
     console.log(content);
     console.log(titel);
     console.log(roles);
-
 
     dbAnzeigen.run(`INSERT INTO ANZEIGEN (TITEL, INHALT, ROLLE) VALUES ('${titel}','${content}', '${roles}')`,(error)=>{
         if(error){
