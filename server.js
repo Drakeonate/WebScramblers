@@ -44,7 +44,9 @@ nodemailer.createTestAccount((err, account) => {
         console.log('Preview URL: %s', nodemailer.getTestMessagerUrl(info));
         });
     });
-    
+
+
+
 // z.B. http://localhost:3000/image.html
 app.use(express.static(__dirname + '/public'));
 const bodyParser= require('body-parser');
@@ -59,7 +61,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 
 //let db = new sqlite3.Database('logins.db');
-let db = new sqlite3.Database('login.db',(error)=>{
+let db = new sqlite3.Database('login.db',(error)=>{});
 
 let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
 
@@ -70,7 +72,7 @@ let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
         console.log('Connected to the database.');
     }
 });
-});
+
 
 
 //Sessionvariablen
@@ -107,17 +109,19 @@ app.get('/profil', function(req,rep) {
 app.get(['/endprofil'], function(req,res) {
     const sql= 'SELECT * FROM profil';
     console.log(sql);
-    login.db(sql, function(err, rows){
+    db(sql, function(err, rows){
         if(err){
             console.log(err.message);
         
         }
         else{
             console.log(rows);
+
             res.render('endprofil',{'rows' : rows || []});
+            //res.render('endprofil',('rows' : rows || []}));
 
         }
-    })
+    });
 });
 
 app.post('/profilerstellen', function(req,res) {
@@ -134,12 +138,18 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
+
     dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilkönnen}', '${profilhobby}')`,(error)=>{ 
         if(error){
             console.error(error.message);
         } else {
             console.log('Wrote to database');
         }
+    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
+    console.log(sql);
+    db.run(sql, function(err){
+        res.redirect("/profil");
+
     });
 
 });
@@ -160,14 +170,13 @@ app.get('/anzeigeErstellen', function (req, rep) {
     rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
 });
 
-app.post('/erstellen', function (req, rep) {
+app.post('/erstellen2', function (req, rep) {
     const content = req.body["content"];
     const titel = req.body["titel"];
     const roles = req.body["role"];
     console.log(content);
     console.log(titel);
     console.log(roles);
-
 
     dbAnzeigen.run(`INSERT INTO ANZEIGEN (TITEL, INHALT, ROLLE) VALUES ('${titel}','${content}', '${roles}')`,(error)=>{
         if(error){
@@ -187,7 +196,28 @@ app.post('/users', function (req, rep) {
     const role = req.body['text'];
     //const list = document.getElementById('userListId');
     console.log(role);
-    users = ['Ed', 'pye', 'joshi'];
+    users = [];
+
+    db.get(`SELECT * FROM PROFIL`,(error,row)=>{
+
+        if(row != undefined){
+            console.log("Role: " + row.ROLE);
+            //Wenn ja, schau ob das Password richtig ist
+            if(row.ROLE.includes(role)){
+                //hat geklappt
+                // Sessionvariable setzen
+                users.push(row.PROFILNAME);
+                console.log(row.PROFILNAME);
+            }
+        } else {
+            users = ['Ed', 'pye', 'joshi']; // Default Test
+        }
+        //Falls ein Fehler auftritt in der Abfrage, gebe ihn aus
+        if(error){
+            console.error(error.message);
+        }
+    });
+
     // Users have to be transfered from the databank with name, role and user page
     rep.redirect('/userListe');
 });
@@ -234,12 +264,12 @@ app.get('/registration', (req, res)=>{
 	res.sendFile(__dirname + "/registration.html");
 });
 
-app.post('/registrierung', (req,res)=>{
-	//ABfrage von user input und abspeichern in variablen
-	const user = req.body["user"];
+app.post('/registrierung', (req,res)=> {
+    //ABfrage von user input und abspeichern in variablen
+    const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-    
+
 //Fügt den User in die Datenbank ein
 let found = false;
 db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
@@ -258,7 +288,23 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
 });
     	res.redirect('login');
 });
-	
+    let found = false;
+    db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
+        found = true;
+        console.log("found user");
+    });
+    if (!found) {
+        db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
+            if (error) {
+                console.error(error.message);
+            }
+            console.log("User now in database");
+        });
+    } else {
+
+    }
+});
+
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
 	
@@ -267,8 +313,5 @@ app.get('/userListe', function (req, rep) {
     rep.render('userListe', {
         users: users
     });
-
-
     console.log('rednering');
 });
-
