@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const http = require('http');
+'use strict';
 const nodemailer = require("nodemailer");
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/public')));
@@ -10,6 +11,8 @@ app.get('/' , function(req, res) {
     res.send('Hello World')
 });
 
+
+
 nodemailer.createTestAccount((err, account) => {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
@@ -17,10 +20,31 @@ nodemailer.createTestAccount((err, account) => {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: account.user, // generated ethereal user
-            pass: account.pass // generated ethereal password
+            user: "pyeson22@gmail.com", // generated ethereal user
+            pass: "hallo" // generated ethereal password
         }
     });
+    
+    
+
+    let mailOptions = {
+        from: '"Pyeson Oo" <pyeson22gmail.com>',
+        to: 'pyeson22@gmail.com',
+        subject: 'Password',
+        text: 'Moin Pyeson dein Passwort lautet hallo',
+        html: 'forgot_password</b>'
+
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: %s', innfo.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessagerUrl(info));
+        });
+    });
+    
 // z.B. http://localhost:3000/image.html
 app.use(express.static(__dirname + '/public'));
 const bodyParser= require('body-parser');
@@ -35,9 +59,6 @@ const sqlite3 = require('sqlite3').verbose();
 
 let db = new sqlite3.Database('logins.db');
 
-let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
-
-
 //let db = new sqlite3.Database('logins.db');
 let db = new sqlite3.Database('login.db',(error)=>{
 
@@ -50,7 +71,7 @@ let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
         console.log('Connected to the database.');
     }
 });
-
+});
 
 
 //Sessionvariablen
@@ -77,6 +98,7 @@ app.post('/erstellen', function (req, rep) {
     console.log(content);
     console.log(titel);
     console.log(roles);
+});
 
 app.get('/profil', function(req,rep) {
     rep.sendfile(__dirname+ '/profil.html');
@@ -93,7 +115,7 @@ app.get(['/endprofil'], function(req,res) {
         }
         else{
             console.log(rows);
-            res.render('endprofil',('rows' : rows || []});
+            res.render('endprofil',{'rows' : rows || []});
 
         }
     })
@@ -113,14 +135,23 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
-    dblogin.run('INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter})',
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter})','${profilsemester}')`,(error)=>{ 
+        if(error){
+            console.error(error.message);
+        } else {
+            console.log('Wrote to database');
+        }
+    });
+
+});
+
     console.log(sql);
     db.run(sql, function(err){
         res.redirect("/profil");
-    }
-
     });
-});
+
+    
+
 
 app.get('/index', function(req,rep) {
    rep.sendFile(__dirname + '/index.html');
@@ -214,7 +245,7 @@ let found = false;
 db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
     found = true;
     console.log("found user");
-});
+
     if(!found) {
 	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
 		if(error){
@@ -222,9 +253,9 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
         }
         console.log("User now in database");
 	});
-} else {
-	
-}
+    } else { }
+});
+});
 	
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
