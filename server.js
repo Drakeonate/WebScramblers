@@ -16,20 +16,20 @@ app.get('/' , function(req, res) {
 nodemailer.createTestAccount((err, account) => {
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
+        host: 'smtp.live.com',
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: "pyeson22@gmail.com", // generated ethereal user
-            pass: "hallo" // generated ethereal password
+            user: "pyesonoo@hotmail.de", // generated ethereal user
+            pass: "poseidon" // generated ethereal password
         }
     });
     
     
 
     let mailOptions = {
-        from: '"Pyeson Oo" <pyeson22gmail.com>',
-        to: 'pyeson22@gmail.com',
+        from: '"Pyeson Oo" <pyesonoo@hotmail.de>',
+        to: 'pyesonoo@hotmail.de',
         subject: 'Password',
         text: 'Moin Pyeson dein Passwort lautet hallo',
         html: 'forgot_password</b>'
@@ -57,7 +57,6 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('logins.db');
 
 //let db = new sqlite3.Database('logins.db');
 let db = new sqlite3.Database('login.db',(error)=>{
@@ -145,10 +144,10 @@ app.post('/profilerstellen', function(req,res) {
 
 });
 
-    console.log(sql);
-    db.run(sql, function(err){
-        res.redirect("/profil");
-    });
+    //console.log(sql);
+    //db.run(sql, function(err){
+        //res.redirect("/profil");
+    //});
 
     
 
