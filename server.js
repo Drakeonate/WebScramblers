@@ -82,7 +82,7 @@ app.get('/profil', function(req,rep) {
 app.get(['/endprofil'], function(req,res) {
     const sql= 'SELECT * FROM profil';
     console.log(sql);
-    login.db(sql, function(err, rows){
+    db(sql, function(err, rows){
         if(err){
             console.log(err.message);
         
@@ -109,7 +109,7 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
+    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
     console.log(sql);
     db.run(sql, function(err){
         res.redirect("/profil");
@@ -150,7 +150,28 @@ app.post('/users', function (req, rep) {
     const role = req.body['text'];
     //const list = document.getElementById('userListId');
     console.log(role);
-    users = ['Ed', 'pye', 'joshi'];
+    users = [];
+
+    db.get(`SELECT * FROM PROFIL`,(error,row)=>{
+
+        if(row != undefined){
+            console.log("Role: " + row.ROLE);
+            //Wenn ja, schau ob das Password richtig ist
+            if(row.ROLE.includes(role)){
+                //hat geklappt
+                // Sessionvariable setzen
+                users.push(row.PROFILNAME);
+                console.log(row.PROFILNAME);
+            }
+        } else {
+            users = ['Ed', 'pye', 'joshi']; // Default Test
+        }
+        //Falls ein Fehler auftritt in der Abfrage, gebe ihn aus
+        if(error){
+            console.error(error.message);
+        }
+    });
+
     // Users have to be transfered from the databank with name, role and user page
     rep.redirect('/userListe');
 });
