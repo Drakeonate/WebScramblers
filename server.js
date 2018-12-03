@@ -109,7 +109,7 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
-    dblogin.run('INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES (${profilname}, ${profilalter})');
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
     console.log(sql);
     db.run(sql, function(err){
         res.redirect("/profil");
