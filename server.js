@@ -21,6 +21,7 @@ nodemailer.createTestAccount((err, account) => {
             pass: account.pass // generated ethereal password
         }
     });
+});
 // z.B. http://localhost:3000/image.html
 app.use(express.static(__dirname + '/public'));
 const bodyParser= require('body-parser');
@@ -33,13 +34,8 @@ app.set('view engine', 'ejs');
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('logins.db');
-
-let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
-
-
 //let db = new sqlite3.Database('logins.db');
-let db = new sqlite3.Database('login.db',(error)=>{
+let db = new sqlite3.Database('login.db',(error)=>{});
 
 let dbAnzeigen = new sqlite3.Database('anzeigen.db',(error)=>{
 
@@ -77,7 +73,7 @@ app.post('/erstellen', function (req, rep) {
     console.log(content);
     console.log(titel);
     console.log(roles);
-
+});
 app.get('/profil', function(req,rep) {
     rep.sendfile(__dirname+ '/profil.html');
 
@@ -93,10 +89,10 @@ app.get(['/endprofil'], function(req,res) {
         }
         else{
             console.log(rows);
-            res.render('endprofil',('rows' : rows || []});
+            //res.render('endprofil',('rows' : rows || []}));
 
         }
-    })
+    });
 });
 
 app.post('/profilerstellen', function(req,res) {
@@ -113,12 +109,10 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilkönnen);
     console.log(profilhobby);
 
-    dblogin.run('INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter})',
+    dblogin.run('INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES (${profilname}, ${profilalter})');
     console.log(sql);
     db.run(sql, function(err){
         res.redirect("/profil");
-    }
-
     });
 });
 
@@ -203,29 +197,30 @@ app.get('/registration', (req, res)=>{
 	res.sendFile(__dirname + "/registration.html");
 });
 
-app.post('/registrierung', (req,res)=>{
-	//ABfrage von user input und abspeichern in variablen
-	const user = req.body["user"];
+app.post('/registrierung', (req,res)=> {
+    //ABfrage von user input und abspeichern in variablen
+    const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-    
+
 //Fügt den User in die Datenbank ein
-let found = false;
-db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
-    found = true;
-    console.log("found user");
+    let found = false;
+    db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
+        found = true;
+        console.log("found user");
+    });
+    if (!found) {
+        db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
+            if (error) {
+                console.error(error.message);
+            }
+            console.log("User now in database");
+        });
+    } else {
+
+    }
 });
-    if(!found) {
-	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
-		if(error){
-			console.error(error.message);
-        }
-        console.log("User now in database");
-	});
-} else {
-	
-}
-	
+
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
 	
@@ -234,8 +229,5 @@ app.get('/userListe', function (req, rep) {
     rep.render('userListe', {
         users: users
     });
-
-
     console.log('rednering');
 });
-
