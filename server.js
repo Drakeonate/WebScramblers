@@ -139,27 +139,20 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilhobby);
 
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilkönnen}', '${profilhobby}')`,(error)=>{ 
-        if(error){
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilkönnen}', '${profilhobby}')`, (error) => {
+        if (error) {
             console.error(error.message);
         } else {
             console.log('Wrote to database');
         }
-    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
-    console.log(sql);
-    db.run(sql, function(err){
-        res.redirect("/profil");
-
     });
-
-});
 
     //console.log(sql);
     //db.run(sql, function(err){
-        //res.redirect("/profil");
+    //res.redirect("/profil");
     //});
 
-    
+});
 
 
 app.get('/index', function(req,rep) {
@@ -206,8 +199,8 @@ app.post('/users', function (req, rep) {
             if(row.ROLE.includes(role)){
                 //hat geklappt
                 // Sessionvariable setzen
-                users.push(row.PROFILNAME);
-                console.log(row.PROFILNAME);
+                users.push(row.NAME);
+                console.log(row.NAME);
             }
         } else {
             users = ['Ed', 'pye', 'joshi']; // Default Test
@@ -269,42 +262,41 @@ app.post('/registrierung', (req,res)=> {
     const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-
 //Fügt den User in die Datenbank ein
-let found = false;
-db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
-    if (row !=undefined){
-        found = true;
-        console.log("found user");
-    }
-    if(!found) {
-	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
-		if(error){
-			console.error(error.message);
-        }
-        console.log("User now in database");
-	});
-    } else { }
-});
-    	res.redirect('login');
-});
     let found = false;
     db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
-        found = true;
-        console.log("found user");
-    });
-    if (!found) {
-        db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
-            if (error) {
-                console.error(error.message);
-            }
-            console.log("User now in database");
+        if (row != undefined) {
+            found = true;
+            console.log("found user");
+        }
+        if (!found) {
+            db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
+                if (error) {
+                    console.error(error.message);
+                }
+                console.log("User now in database");
+            });
+        } else {
+        }
+        res.redirect('login');
+
+        let found = false;
+        db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
+            found = true;
+            console.log("found user");
         });
-    } else {
+        if (!found) {
+            db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
+                if (error) {
+                    console.error(error.message);
+                }
+                console.log("User now in database");
+            });
+        } else {
 
-    }
+        }
+    });
 });
-
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
 	
