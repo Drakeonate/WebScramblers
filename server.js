@@ -105,10 +105,15 @@ app.post('/erstellen', function (req, rep) {
     console.log(roles);
 });
 
+
+
+
 app.get('/profil', function(req,rep) {
-    rep.sendfile(__dirname+ '/profil.html');
+    rep.sendFile(__dirname+ '/profil.html');
 
 });
+
+
 
 app.get(['/endprofil'], function(req,res) {
     db.get= 'SELECT * FROM PROFIL';
@@ -226,8 +231,8 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-app.get('/login',  (req, res) => {
-    res.sendFile(__dirname + "/views/login.html");
+app.get('/login',  function(req, rep)  {
+    rep.sendFile(__dirname+ '/login.html');
 });
 
 app.post('/anmelden',function (req,res){
@@ -244,7 +249,7 @@ app.post('/anmelden',function (req,res){
 			//Wenn ja, schau ob das Password richtig ist
 			if(password == row.PASSWORD){
 				//hat geklappt
-				// Sessionvariable setzen
+				//Sessionvariable setzen
                 req.session['user'] = user;
                 console.log("User Found and password right");
 				res.redirect('/success');
@@ -279,8 +284,8 @@ app.get('/logout', function (req, res){
 	res.redirect('/login');
 });
 
-app.get('/registration', (req, res)=>{
-	res.sendFile(__dirname + "/views/registration.html");
+app.get('/registration',(req, rep)=>{
+	rep.sendFile(__dirname + "/views/registration.html");
 });
 
 app.post('/registrierung', (req,res)=> {
@@ -288,7 +293,7 @@ app.post('/registrierung', (req,res)=> {
     const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-
+});
 //Fügt den User in die Datenbank ein
 let found = false;
 db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
@@ -304,9 +309,9 @@ db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
         console.log("User now in database");
 	});
     } else { }
-});
+
     	res.redirect('login');
-});
+
     let found = false;
     db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`, (error, row) => {
         found = true;
@@ -318,7 +323,7 @@ db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
                 console.error(error.message);
             }
             console.log("User now in database");
-        });
+       });
     } else {
 
     }
@@ -333,4 +338,6 @@ app.get('/userListe', function (req, rep) {
         users: users
     });
     console.log('rednering');
+
+});
 });

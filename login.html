@@ -79,7 +79,7 @@
               <h2 class="display-4">Login</h2>
 
               
-                <form action="anmelden" method="post" id="LoginId">
+                <form action="anmelden" method="post" id="formId">
 					        Email: <input type="text" name="user"> <br>
 					        Passwort: <input type="password" name="password"> <br>
 					
@@ -114,8 +114,8 @@
 
 
   <script>
-      $("#LoginId").submit(function (event) {
-    $.post('/anmelden', $("#LoginId").serialize(), function (data) {
+      $("#formId").submit(function (event) {
+    $.post('/anmelden', $("#formId").serialize(), function (data) {
        console.log(data) //data is the response from the backend
     });
     event.preventDefault();

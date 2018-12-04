@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,8 +26,16 @@
   </head>
   <!-- Side navigation -->
   <div class="sidenav">
-   
-   
+    <a href="#">About</a>
+    <a href="/anzeigeErstellen">Anzeige<br>Erstellen</a>
+    <a href="#">Anzeigen</a>
+    <form id="sucheId">
+
+      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
+        <a href="userListe"  style="color: #6c757d;text-align: left"> Suche</a>
+      </button>
+      <input id="textId" name="text" type="text">
+    </form>>
   </div>
 
   <!-- Page content -->
@@ -45,7 +52,10 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a href="/registration">Sign Up</a>
-           </li>
+            </li>
+            <li class="nav-item">
+              <a href="/logout">Abmelden</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -76,18 +86,22 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Login</h2>
+              <h2 class="display-4">Profil</h2>
 
-              
-                <form action="anmelden" method="post" id="LoginId">
-					Email: <input type="text" name="user"> <br>
-					Passwort: <input type="password" name="password"> <br>
-					
-					            <input type="submit" value="anmelden" name="submit" id="submitButton">
-            <a href="/forgot_password">Passwort vergessen                                                                                                                                                              </a> <br>
-				</div>
-			</div>
-				</form>
+              <form id="profilId">
+                  <table>
+                    <% for(var i = 0; i < rows.length; i++) { %>
+                      <tr>
+                        <td> <%= rows[i].name</td
+                        <td> <%= rows[i].alter</td>>
+                        <td> <%= rows[i].semester</td>
+                        <td> <%= rows[i].studiengang</td>
+                        <td> <%= rows[i].können</td>
+                        <td> <%= rows[i].hobby</td>
+                      </tr>
+                  <%}%>
+                  </table>
+                      <a href=<"profil">Profil bearbeiten </a>
               </form>
 
               <p></p>
@@ -112,13 +126,14 @@
   </body>
 
 
-
-  <script>
-      $("#LoginId").submit(function (event) {
-    $.post('/anmelden', $("#LoginId").serialize(), function (data) {
-       console.log(data) //data is the response from the backend
+<script>
+    $("#ProfilId").submit(function (event) {
+        $.post('/erstellen2', $("#ProfilId").serialize(), function (data) {
+            console.log(data); //data is the response from the backend
+            console.log('SHT');
+        });
+        event.preventDefault();
     });
-    event.preventDefault();
-  });
   </script>
+  
 </html>
