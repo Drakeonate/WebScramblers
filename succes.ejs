@@ -78,7 +78,7 @@
 
               <h2 class="display-4">Succes</h2>
 
-              <form id="formId">
+              <form id="SuccesId">
 				<body>
 					Du bist erfolgreich angemeldet! <br>
 				
@@ -110,8 +110,8 @@
 
 
   <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
+	$("#SuccesId").submit(function (event) {
+	$.post('/registration', $("#SuccesId").serialize(), function (data) {
 	   console.log(data) //data is the response from the backend
 	});
 	event.preventDefault();

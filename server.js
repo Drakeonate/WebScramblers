@@ -222,8 +222,8 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-app.get('/login2', (req, res)=>{
-    res.sendFile(__dirname + "/login.ejs");
+app.get('/login', (req, res)=>{
+    res.sendFile(__dirname + "/login.html");
 });
 
 app.post('/anmelden', function(req,res){
