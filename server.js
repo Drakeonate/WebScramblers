@@ -135,17 +135,17 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilalter);
     console.log(profilsemester);
     console.log(profilstudiengang);
-    console.log(profilkönnen);
+    console.log(profilrole);
     console.log(profilhobby);
 
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilkönnen}', '${profilhobby}')`,(error)=>{ 
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`,(error)=>{ 
         if(error){
             console.error(error.message);
         } else {
             console.log('Wrote to database');
         }
-    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,KÖNNEN,HOBBY) VALUES ('${profilname}', '${profilalter}')`);
+    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}', '${profilalter}','${profilsemester}', '${profilstudiengang}','${profilrole}','${profilhobby}' )`);
     console.log(sql);
     db.run(sql, function(err){
         res.redirect("/profil");
@@ -258,6 +258,21 @@ app.post('/anmelden', function(req,res){
 				console.error(error.message);
 		}
 	});
+});
+
+app.get('/success', function(req, res){
+	if (!req.session['user']){
+		res.redirect('/login');
+	}
+	else{
+		const user = req.session['user'];
+		res.render('success', {'user': user});
+	}
+});
+
+app.get('/logout', function (req, res){
+	delete req.session['user'];
+	res.redirect('/login');
 });
 
 app.get('/registration', (req, res)=>{
