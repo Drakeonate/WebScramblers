@@ -324,7 +324,6 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
 
     }
 });
-});
 
     //Nach der Registrierung, wird man zu der Login Seite geführt
     // redirect bringt uns direkt zu einer Seite und holt die Informationen und render holt die Infos aus ejs File
