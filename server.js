@@ -56,6 +56,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.engine('.ejs', require('ejs').__express);
 app.set('view engine', 'ejs');
 
+app.listen(3000, function() {
+    console.log('listening on 3000')
+});
+
 // Datenbank initialisieren
 const sqlite3 = require('sqlite3').verbose();
 
@@ -129,7 +133,7 @@ app.post('/profilerstellen', function(req,res) {
     const profilalter = req.body["profilalter"];
     const profilsemester = req.body["profilsemester"];
     const profilstudiengang = req.body["profilstudiengang"];
-    const profilkönnen = req.body["profilkönnen"];
+    const profilrole = req.body["profilrole"];
     const profilhobby = req.body["profilhobby"];
     console.log(profilname);
     console.log(profilalter);
@@ -188,9 +192,9 @@ app.post('/erstellen2', function (req, rep) {
 
 });
 
-app.listen(3000, function() {
-    console.log('listening on 3000')
-});
+
+
+
 let users;
 app.post('/users', function (req, rep) {
     const role = req.body['text'];
@@ -222,8 +226,9 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-app.get('/login', (req, res)=>{
-    res.sendFile(__dirname + "/login.html");
+app.get('/login', function (req, res) {
+    res.send('Hello World');
+   // res.sendFile(__dirname + "/views/login.html");
 });
 
 app.post('/anmelden', function(req,res){
@@ -276,7 +281,7 @@ app.get('/logout', function (req, res){
 });
 
 app.get('/registration', (req, res)=>{
-	res.sendFile(__dirname + "/registration.html");
+	res.sendFile(__dirname + "/views/registration.html");
 });
 
 app.post('/registrierung', (req,res)=> {
