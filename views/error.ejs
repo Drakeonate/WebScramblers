@@ -78,7 +78,7 @@
 
               <h2 class="display-4">Error</h2>
 
-              <form id="formId">
+              <form id="ErrorId">
 				<body>
 					Fehler: Anmeldung fehlgeschlagen<br>
                      <a href="/login">Neuer Versuch</a>
@@ -110,8 +110,8 @@
 
 
   <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
+	$("#ErrorId").submit(function (event) {
+	$.post('/registration', $("#ErrorId").serialize(), function (data) {
 	   console.log(data) //data is the response from the backend
 	});
 	event.preventDefault();
