@@ -143,19 +143,20 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilhobby);
 
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`,(error)=>{ 
-        if(error){
+    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`, (error) => {
+        if (error) {
             console.error(error.message);
         } else {
             console.log('Wrote to database');
         }
-    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}', '${profilalter}','${profilsemester}', '${profilstudiengang}','${profilrole}','${profilhobby}' )`);
-    console.log(sql);
-    db.run(sql, function(err){
-        res.redirect("/profil");
+        db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}', '${profilalter}','${profilsemester}', '${profilstudiengang}','${profilrole}','${profilhobby}' )`);
+        console.log(sql);
+        db.run(sql, function (err) {
+            res.redirect("/profil");
+
+        });
 
     });
-
 });
 
     //console.log(sql);
@@ -289,7 +290,7 @@ app.post('/registrierung', (req,res)=> {
     const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-
+});
 //Fügt den User in die Datenbank ein
 let found = false;
 db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
@@ -305,9 +306,8 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
         console.log("User now in database");
 	});
     } else { }
-});
+
     	res.redirect('login');
-});
     let found = false;
     db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
         found = true;
@@ -323,6 +323,7 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
     } else {
 
     }
+});
 });
 
     //Nach der Registrierung, wird man zu der Login Seite geführt
