@@ -79,7 +79,7 @@
 
               <h2 class="display-4">Registration</h2>
 
-              <form action="registrierung" method="post">
+              <form action="registrierung" method="post" id="RegistrationId">
                 Email: <input type="text" name="user"> <br>
                 Passwort: <input type="password" name="password"> <br>
           
@@ -109,8 +109,8 @@
 
 
   <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
+	$("#RegistrationId").submit(function (event) {
+	$.post('/registration', $("#RegistrationId").serialize(), function (data) {
 	   console.log(data) //data is the response from the backend
 	});
 	event.preventDefault();
