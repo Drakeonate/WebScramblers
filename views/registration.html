@@ -79,10 +79,9 @@
 
               <h2 class="display-4">Registration</h2>
 
-              <form id="formId">
-                <form action="registrierung" method="post">
-					Benutzername: <input type="text" name="user"> <br>
-					Passwort: <input type="password" name="password"> <br>
+             
+            Email: <input type="text" name="user"> <br>
+					  Passwort: <input type="password" name="password"> <br>
 		
 					<input type="submit" value="Registrierung" name="submit">
 			</form>
@@ -111,8 +110,8 @@
 
 
   <script type="text/javascript">
-	$("#formId").submit(function (event) {
-	$.post('/registration', $("#formId").serialize(), function (data) {
+	$("#RegistrationId").submit(function (event) {
+	$.post('/registration', $("#RegistrationId").serialize(), function (data) {
 	   console.log(data) //data is the response from the backend
 	});
 	event.preventDefault();
