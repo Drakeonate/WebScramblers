@@ -215,6 +215,27 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
+let anzeigenListe;
+app.post('/anzeigen', function (req, res) {
+
+    anzeigenListe = [];
+
+    // Öffnen einer verbindung zur datenbank 'anzeigen.db'
+    let db = new sqlite3.Database('./anzeigen.db');
+
+    // SQL - Query zum auslesen
+    let selectAllFromAnzeigen = `SELECT TITEL, INHALT, ROLLE FROM ANZEIGEN`;
+
+
+    db.all(selectAllFromAnzeigen, [], (error, rows) => {
+        if (rows !== undefined) {
+            anzeigenListe.push(rows);
+        }
+    });
+
+    res.redirect('/anzeigenListe');
+	
+	});
 app.get('/login', (req, res)=>{
     res.sendFile(__dirname + "/login.html");
 });
@@ -306,4 +327,9 @@ app.get('/userListe', function (req, rep) {
         users: users
     });
     console.log('rednering');
+});
+app.get('/anzeigenListe', function (req, res) {
+    res.render('anzeigenListe', {
+        anzeigenListe: anzeigenListe
+    });
 });
