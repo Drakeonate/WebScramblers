@@ -114,8 +114,8 @@
 
 
   <script>
-      $("#formId").submit(function (event) {
-    $.post('/anmelden', $("#formId").serialize(), function (data) {
+      $("#LoginId").submit(function (event) {
+    $.post('/anmelden', $("#LoginId").serialize(), function (data) {
        console.log(data) //data is the response from the backend
     });
     event.preventDefault();
