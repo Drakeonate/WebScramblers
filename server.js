@@ -111,7 +111,7 @@ app.get('/profil', function(req,rep) {
 });
 
 app.get(['/endprofil'], function(req,res) {
-    const sql= 'SELECT * FROM profil';
+    db.get= 'SELECT * FROM PROFIL';
     console.log(sql);
     db(sql, function(err, rows){
         if(err){
@@ -128,7 +128,7 @@ app.get(['/endprofil'], function(req,res) {
     });
 });
 
-app.post('/profilerstellen', function(req,res) {
+app.post('/person', function(req,res) {
     const profilname = req.body["profilname"];
     const profilalter = req.body["profilalter"];
     const profilsemester = req.body["profilsemester"];
@@ -143,7 +143,7 @@ app.post('/profilerstellen', function(req,res) {
     console.log(profilhobby);
 
 
-    dblogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`,(error)=>{ 
+    dbLogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`,(error)=>{ 
         if(error){
             console.error(error.message);
         } else {
@@ -226,19 +226,18 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-app.get('/login', function (req, res) {
-    res.send('Hello World');
-   // res.sendFile(__dirname + "/views/login.html");
+app.get('/login',  (req, res) => {
+    res.sendFile(__dirname + "/views/login.html");
 });
 
-app.post('/anmelden', function(req,res){
+app.post('/anmelden',function (req,res){
 	let user = req.body["user"];
     let password = req.body["password"];
 
     console.log(user);
     
     //Überprüft, ob der User in unserer Datenbank gespreichert ist
-	db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
+	db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
             
         if(row != undefined){
             console.log("Password: " + row.PASSWORD);
@@ -292,13 +291,13 @@ app.post('/registrierung', (req,res)=> {
 
 //Fügt den User in die Datenbank ein
 let found = false;
-db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
+db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
     if (row !=undefined){
         found = true;
         console.log("found user");
     }
     if(!found) {
-	db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
+	db.run(`INSERT INTO USERS (LOGIN, PASSWORD) VALUES ('${user}','${pw}')`,(error)=>{
 		if(error){
 			console.error(error.message);
         }
@@ -309,12 +308,12 @@ db.get(`SELECT * FROM USERS WHERE NAME='${user}'`,(error,row)=>{
     	res.redirect('login');
 });
     let found = false;
-    db.get(`SELECT * FROM USERS WHERE NAME='${user}'`, (error, row) => {
+    db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`, (error, row) => {
         found = true;
         console.log("found user");
     });
     if (!found) {
-        db.run(`INSERT INTO USERS (NAME, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
+        db.run(`INSERT INTO USERS (LOGIN, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
             if (error) {
                 console.error(error.message);
             }
