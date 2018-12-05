@@ -1,0 +1,46 @@
+
+</DOCTYPE html>
+<html>
+	<head>
+		<title> WebScramblers </title>
+	</head>
+			<a href="profil.html"> Profil bearbeiten </a>
+			<a href="anzeigeErstellen.html"> Anzeige erstellen </a>
+			
+	<body> 
+		<h1> Profil erstellen </h1>
+		<form action ="/ kontakt" method = "Post">
+			
+			Name: <output type= "text" name = "name"> <br>
+			Alter: <output type= "number" name = "alter"> <br>
+			Semester: <output type= "number" name = "semester"> <br>
+			Studiengang: <output type= "text" name = "studiengang"> <br>
+			K&#246;nnen: <output type= "text" name = "können"> <br>
+			Hobby: <output type= "text" name = "hobby"> <br>
+			<button type = "submit"> Absenden </button>
+		
+	</body>
+			
+</html>
+
+
+// variable zum ersetzen
+function profil(request, response){
+let name = "name"
+let alter = "age"
+let semester = "semester"
+let studiengang = "studiengang"
+let role = "können"
+let hobby = "hobby" 
+}
+//funktion die den inhalt von einer.. auf eine andere seite ersetzt
+function getBody(content) { 
+   var x = content.indexOf("<body");
+   x = content.indexOf(">", x);    
+   var y = content.lastIndexOf("</body>"); 
+   return content.slice(x + 1, y);
+   document.getElementById("displayed").innerHTML = responseHTML.innerHTML;
+}
+
+
+
