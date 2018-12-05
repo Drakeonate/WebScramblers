@@ -110,8 +110,9 @@
 
   <script type="text/javascript">
 	$("#RegistrationId").submit(function (event) {
-	$.post('/registration', $("#RegistrationId").serialize(), function (data) {
-	   console.log(data) //data is the response from the backend
+	$.post('/registration2', $("#RegistrationId").serialize(), function (data) {
+     console.log(data) //data is the response from the backend
+     location.reload();
 	});
 	event.preventDefault();
   });

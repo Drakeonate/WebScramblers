@@ -105,36 +105,46 @@ app.post('/erstellen', function (req, rep) {
     console.log(roles);
 });
 
-
-
-
 app.get('/profil', function(req,rep) {
-    rep.sendFile(__dirname+ '/profil.html');
+    rep.sendFile(__dirname+ '/views/profil.html');
 
 });
+let userAnmelden;
+let profilname;
+app.get('/endprofil', function(req,res) {
+    let sql = 'DEFAULT';
+    let ary = [];
+    if(profilname != undefined) {
 
+        sql= `SELECT * FROM PROFIL WHERE NAME = '${profilname}'`;
+        db.get(sql, function(err, rows){
+            ary.push('Name: ' + rows.NAME);
+            ary.push('Ater: '+ rows.AGE);
+            ary.push('Semester: '+ rows.SEMSTER);
+            ary.push('Studiengang: '+ rows.STUDIENGANG);
+            ary.push('Können: '+ rows.ROLE);
+            ary.push('Hobby: '+ rows.HOBBY);
+            if(err){
+                console.log(err.message);
+            
+            }
+            else{
+                console.log(rows);
+    
+                res.render('endprofil',{'rows' : ary });
+                //res.render('endprofil',('rows' : rows || []}));
+    
+            }
+        });
+    } else {
 
-
-app.get(['/endprofil'], function(req,res) {
-    db.get= 'SELECT * FROM PROFIL';
+    }
     console.log(sql);
-    db(sql, function(err, rows){
-        if(err){
-            console.log(err.message);
-        
-        }
-        else{
-            console.log(rows);
-
-            res.render('endprofil',{'rows' : rows || []});
-            //res.render('endprofil',('rows' : rows || []}));
-
-        }
-    });
+    
 });
 
-app.post('/person', function(req,res) {
-    const profilname = req.body["profilname"];
+app.post('/profilerstellen2', function(req,res) {
+    profilname = req.body["profilname"];
     const profilalter = req.body["profilalter"];
     const profilsemester = req.body["profilsemester"];
     const profilstudiengang = req.body["profilstudiengang"];
@@ -148,19 +158,13 @@ app.post('/person', function(req,res) {
     console.log(profilhobby);
 
 
-    dbLogin.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`,(error)=>{ 
-        if(error){
+    db.run(`INSERT INTO PROFIL (NAME,AGE,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}','${profilalter}','${profilsemester}', '${profilstudiengang}', '${profilrole}', '${profilhobby}')`, (error) => {
+        if (error) {
             console.error(error.message);
         } else {
             console.log('Wrote to database');
         }
-    db.run(`INSERT INTO PROFIL (NAME,ALTER,SEMESTER,STUDIENGANG,ROLE,HOBBY) VALUES ('${profilname}', '${profilalter}','${profilsemester}', '${profilstudiengang}','${profilrole}','${profilhobby}' )`);
-    console.log(sql);
-    db.run(sql, function(err){
-        res.redirect("/profil");
-
     });
-
 });
 
     //console.log(sql);
@@ -231,26 +235,28 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-app.get('/login',  function(req, rep)  {
-    rep.sendFile(__dirname+ '/login.html');
+app.get('/login', function (req, res) {
+    //res.send('Hello World');
+    res.sendFile(__dirname + "/views/login.html");
+    console.log("YES");
 });
 
-app.post('/anmelden',function (req,res){
-	let user = req.body["user"];
+app.post('/anmelden', function(req,res){
+	userAnmelden = req.body["user"];
     let password = req.body["password"];
 
-    console.log(user);
+    console.log(userAnmelden);
     
     //Überprüft, ob der User in unserer Datenbank gespreichert ist
-	db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
+    db.get(`SELECT * FROM USERS WHERE LOGIN`,(error,row)=>{
             
         if(row != undefined){
             console.log("Password: " + row.PASSWORD);
 			//Wenn ja, schau ob das Password richtig ist
 			if(password == row.PASSWORD){
 				//hat geklappt
-				//Sessionvariable setzen
-                req.session['user'] = user;
+				// Sessionvariable setzen
+                req.session['user'] = userAnmelden;
                 console.log("User Found and password right");
 				res.redirect('/success');
 //				res.render('success', {'user': user});
@@ -284,19 +290,20 @@ app.get('/logout', function (req, res){
 	res.redirect('/login');
 });
 
-app.get('/registration',(req, rep)=>{
-	rep.sendFile(__dirname + "/views/registration.html");
+app.get('/registration', (req, res)=>{
+	res.sendFile(__dirname + "/views/registration.html");
 });
 
-app.post('/registrierung', (req,res)=> {
+app.post('/registration2', (req,res)=> {
     //ABfrage von user input und abspeichern in variablen
     const user = req.body["user"];
     const pw = req.body["password"];
     console.log(user);
-});
+
 //Fügt den User in die Datenbank ein
-let found = false;
+
 db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
+    let found = false;
     if (row !=undefined){
         found = true;
         console.log("found user");
@@ -307,26 +314,11 @@ db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
 			console.error(error.message);
         }
         console.log("User now in database");
+        
 	});
-    } else { }
-
-    	res.redirect('login');
-
-    let found = false;
-    db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`, (error, row) => {
-        found = true;
-        console.log("found user");
-    });
-    if (!found) {
-        db.run(`INSERT INTO USERS (LOGIN, PASSWORD) VALUES ('${user}','${pw}')`, (error) => {
-            if (error) {
-                console.error(error.message);
-            }
-            console.log("User now in database");
-       });
-    } else {
-
     }
+    res.redirect('/login');
+    });
 });
 
     //Nach der Registrierung, wird man zu der Login Seite geführt
@@ -338,6 +330,4 @@ app.get('/userListe', function (req, rep) {
         users: users
     });
     console.log('rednering');
-
-});
 });

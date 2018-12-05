@@ -84,19 +84,12 @@
               <h2 class="display-4">Profil</h2>
 
               <form id="formId">
-                <table>
-                  <% for(var i = 0; i < rows.length; i++) { %>
-                    <tr>
-                      <td> <%= rows[i].name</td
-                      <td> <%= rows[i].alter</td>>
-                      <td> <%= rows[i].semester</td>
-                      <td> <%= rows[i].studiengang</td>
-                      <td> <%= rows[i].können</td>
-                      <td> <%= rows[i].hobby</td>
-                    </tr>
-                <%}%>
-                </table>
-                    <a href=<"profil">Profil bearbeiten </a>
+                <ul>
+                  <% rows.forEach(function(user) { %>
+                      <li> <%= user %> </li>
+                <%});%>
+            </ul>
+                    <a href="/profil">Profil bearbeiten </a>
 
                   </form>
 
@@ -126,7 +119,7 @@
   <script>
       
       $("#formId").submit(function (event) {
-    $.post('/person', $("#formId").serialize(), function (data) {
+    $.post('/profilerstellen', $("#formId").serialize(), function (data) {
        console.log(data) //data is the response from the backend
     });
     event.preventDefault();

@@ -83,17 +83,15 @@
 
               <h2 class="display-4">Profil Erstellen</h2>
 
-              <form id="formId">
-                <form action="person" method="Post">
+              
+                <form action="/person" method="Post" id="formId">
                   Name: <input type= "text" name = "profilname"> <br>
                   Alter: <input type= "number" name = "profilalter"> <br>
                   Semester: <input type= "number" name = "profilsemester"> <br>
                   Studiengang: <input type= "text" name = "profilstudiengang"> <br>
-                  K&#246;nnen: <input type= "text" name = "profilkönnen"> <br>
-                  Hobby: <input type= "text" name = "hobby"> <br>
+                  K&#246;nnen: <input type= "text" name = "profilrole"> <br>
+                  Hobby: <input type= "text" name = "profilhobby"> <br>
                   <button type = "submit"> Absenden & Speichern </button>
-                    <a href="Zum eigenen Profil">Zum eigenen Profil </a>
-
                   </form>
 
               <p></p>
@@ -122,7 +120,7 @@
   <script>
       
       $("#formId").submit(function (event) {
-    $.post('/person', $("#formId").serialize(), function (data) {
+    $.post('/profilerstellen2', $("#formId").serialize(), function (data) {
        console.log(data) //data is the response from the backend
     });
     event.preventDefault();

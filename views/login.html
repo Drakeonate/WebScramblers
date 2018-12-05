@@ -117,6 +117,7 @@
       $("#LoginId").submit(function (event) {
     $.post('/anmelden', $("#LoginId").serialize(), function (data) {
        console.log(data) //data is the response from the backend
+       location.reload();
     });
     event.preventDefault();
   });
