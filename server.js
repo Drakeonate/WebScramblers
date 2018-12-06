@@ -7,9 +7,7 @@ const nodemailer = require("nodemailer");
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '/public')));
 
-app.get('/' , function(req, res) {
-    res.send('Hello World')
-});
+
 
 
 
@@ -87,6 +85,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
+
+app.get('/' , function(req, rep) {
+    rep.sendFile(__dirname + '/views/home.html')
+});
 
 app.get('/index', function(req,rep) {
    rep.sendFile(__dirname + '/index.html');
@@ -219,8 +221,8 @@ app.post('/users', function (req, rep) {
             if(row.ROLE.includes(role)){
                 //hat geklappt
                 // Sessionvariable setzen
-                users.push(row.PROFILNAME);
-                console.log(row.PROFILNAME);
+                users.push(row.NAME);
+                console.log(row.NAME);
             }
         } else {
             users = ['Ed', 'pye', 'joshi']; // Default Test

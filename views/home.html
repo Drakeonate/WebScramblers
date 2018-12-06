@@ -26,10 +26,15 @@
   </head>
   <!-- Side navigation -->
   <div class="sidenav">
+    <a href="#">About</a>
+    <a href="/anzeigeErstellen">Anzeige<br>Erstellen</a>
+    <a href="#">Anzeigen</a>
     <form id="sucheId">
 
-      
-      
+      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
+        <a href="userListe"  style="color: #6c757d;text-align: left"> Suche</a>
+      </button>
+      <input id="textId" name="text" type="text">
     </form>>
   </div>
 
@@ -46,10 +51,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a href="/logout">Abmelden</a>
+              <a href="/registration">Sign Up</a>
             </li>
             <li class="nav-item">
-              <a href="/profil">Profil Anzeigen</a>
+              <a href="/login">Login</a>
             </li>
           </ul>
         </div>
@@ -81,18 +86,15 @@
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
 
-              <h2 class="display-4">Profil Erstellen</h2>
+              <h2 class="display-4">Webscrambler</h2>
 
-              
-                <form action="/person" method="Post" id="formId">
-                  Name: <input type= "text" name = "profilname"> <br>
-                  Alter: <input type= "number" name = "profilalter"> <br>
-                  Semester: <input type= "number" name = "profilsemester"> <br>
-                  Studiengang: <input type= "text" name = "profilstudiengang"> <br>
-                  K&#246;nnen: <input type= "text" name = "profilrole"> <br>
-                  Hobby: <input type= "text" name = "profilhobby"> <br>
-                  <button type = "submit"> Absenden & Speichern </button>
-                  </form>
+              <form id="formId">
+                <p class="display-4">Willkommen<br> </p>
+                
+                  <body>
+                    Webscrambler eine Seite von jungen Entwickler für Entwickler. <br>
+                    Findet andere Entwickler und erschafft neue und atemberaubende Sachen. <br>
+              </form>
 
               <p></p>
             </div>
@@ -116,14 +118,24 @@
   </body>
 
 
-
-  <script>
-      
-      $("#formId").submit(function (event) {
-    $.post('/profilerstellen2', $("#formId").serialize(), function (data) {
-       console.log(data) //data is the response from the backend
+<script>
+    $("#anzegeId").submit(function (event) {
+        $.post('/erstellen2', $("#anzegeId").serialize(), function (data) {
+            console.log(data); //data is the response from the backend
+            console.log('SHT');
+        });
+        event.preventDefault();
     });
-    event.preventDefault();
-  });
+  </script>
+  <script>
+      $("#formId").submit(function (event) {
+          $.post('/users', $("#formId").serialize(), function (data) {
+              console.log(data);//data is the response from the backend
+              console.log('Redirecting');
+          });
+          event.preventDefault();
+      });
+
+
   </script>
 </html>
