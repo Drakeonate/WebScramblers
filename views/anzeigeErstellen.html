@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Webscramblers</title>
 
     <!-- Bootstrap core CSS -->
@@ -28,14 +27,17 @@
   <div class="sidenav">
     <a href="#">About</a>
     <a href="/anzeigeErstellen">Anzeige<br>Erstellen</a>
-    <a href="#">Anzeigen</a>
-    <form id="sucheId">
-
-      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;">
-        <a href="userListe"  style="color: #6c757d;text-align: left"> Suche</a>
+    <form id="anzeigenId" action="anzeigen" method="post">
+      <button class="submitButtonSearch" type="submit" id="submitButtonAnzeigenId" name="submitButtonSearch" style="width: 160px; height: 50px;" onclick="location.href='userListe';">
+        <a style="color: #6c757d;text-align: left"> Anzeigen</a>
       </button>
-      <input id="textId" name="text" type="text">
-    </form>>
+    </form>
+    <form id="sucheId" action="users" method="post">
+      <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;" onclick="location.href='userListe';">
+        <a style="color: #6c757d;text-align: left"> Suche</a>
+      </button>
+      <input id="textId" name="text" type="text" >
+    </form>
   </div>
 
   <!-- Page content -->
@@ -44,7 +46,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
       <div class="container">
-        <a href="/home">Home</a>
+        <a href="/">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -88,7 +90,7 @@
 
               <h2 class="display-4">Anzeige Erstellen</h2>
 
-              <form id="anzegeId">
+              <form id="anzegeId" action="erstellen2" method="post">
                 <p class="display-4">Titel<br> </p>
                 <input type="text" id="titelId" name="titel" >
                 <span><br>Text<br> </span>
