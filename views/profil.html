@@ -2,36 +2,45 @@
 <html lang="en">
 
 
-  <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Webscramblers</title>
+<head>
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Webscramblers</title>
 
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="../public/css/one-page-wonder.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
 
-    <!-- Load Css -->
-    <link rel="stylesheet" type="text/css" href="/css/anzeigeErstellenSheet.css">
-  </head>
-  <!-- Side navigation -->
-  <div class="sidenav">
-    <form id="sucheId">
+  <!-- Custom styles for this template -->
+  <link href="../public/css/one-page-wonder.min.css" rel="stylesheet">
 
-      
-      
-    </form>>
-  </div>
+  <!-- Load Css -->
+  <link rel="stylesheet" type="text/css" href="/css/anzeigeErstellenSheet.css">
+</head>
+<!-- Side navigation -->
+<div class="sidenav">
+  <a href="#">About</a>
+  <a href="/anzeigeErstellen">Anzeige<br>Erstellen</a>
+  <form id="anzeigenId" action="anzeigen" method="post">
+    <button class="submitButtonSearch" type="submit" id="submitButtonAnzeigenId" name="submitButtonSearch" style="width: 160px; height: 50px;" onclick="location.href='userListe';">
+      <a style="color: #6c757d;text-align: left"> Anzeigen</a>
+    </button>
+  </form>
+  <form id="sucheId" action="users" method="post">
+
+    <button class="submitButtonSearch" type="submit" id="submitButtonSearchId" name="submitButtonSearch" style="width: 160px; height: 50px;" onclick="location.href='userListe';">
+      <a style="color: #6c757d;text-align: left"> Suche</a>
+    </button>
+    <input id="textId" name="text" type="text" >
+  </form>>
+</div>
 
   <!-- Page content -->
   <body>

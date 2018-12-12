@@ -184,7 +184,7 @@ app.get('/index', function(req,rep) {
 app.get('/anzeigeErstellen', function (req, rep) {
     rep.sendFile(__dirname + '/views/anzeigeErstellen.html');
 });
-
+let anzeigenListe;
 app.post('/erstellen2', function (req, rep) {
     const content = req.body["content"];
     const titel = req.body["titel"];
@@ -201,6 +201,25 @@ app.post('/erstellen2', function (req, rep) {
         }
     });
 
+    anzeigenListe = [];
+
+    // Öffnen einer verbindung zur datenbank 'anzeigen.db'
+    let db = new sqlite3.Database('./anzeigen.db');
+
+    // SQL - Query zum auslesen
+    let selectAllFromAnzeigen = `SELECT TITEL, INHALT, ROLLE FROM ANZEIGEN`;
+
+
+    db.all(selectAllFromAnzeigen, [], (error, rows) => {
+        if (rows !== undefined) {
+            for(let i = 0; i < rows.length; i++) {
+                anzeigenListe.push(rows[i]);
+            }
+
+        }
+    });
+
+    rep.redirect('/anzeigenListe');
 });
 
 
@@ -213,17 +232,21 @@ app.post('/users', function (req, rep) {
     console.log(role);
     users = [];
 
-    db.get(`SELECT * FROM PROFIL`,(error,row)=>{
-
+    db.all(`SELECT * FROM PROFIL`,(error,row)=>{
         if(row != undefined){
-            console.log("Role: " + row.ROLE);
-            //Wenn ja, schau ob das Password richtig ist
-            if(row.ROLE.includes(role)){
-                //hat geklappt
-                // Sessionvariable setzen
-                users.push(row.NAME);
-                console.log(row.NAME);
+            console.log(row.length);
+            for(let i = 0; i < row.length; i++) {
+                console.log("Role: " + row[i].ROLE);
+                console.log("Role: " + row[i].NAME);
+                //Wenn ja, schau ob das Password richtig ist
+                if(row[i].ROLE.includes(role)){
+                    //hat geklappt
+                    // Sessionvariable setzen
+                    users.push(row[i].NAME);
+                    console.log(row[i].NAME);
+                }
             }
+
         } else {
             users = ['Ed', 'pye', 'joshi']; // Default Test
         }
@@ -237,7 +260,7 @@ app.post('/users', function (req, rep) {
     rep.redirect('/userListe');
 });
 
-let anzeigenListe;
+
 app.post('/anzeigen', function (req, res) {
 
     anzeigenListe = [];
@@ -251,7 +274,10 @@ app.post('/anzeigen', function (req, res) {
 
     db.all(selectAllFromAnzeigen, [], (error, rows) => {
         if (rows !== undefined) {
-            anzeigenListe.push(rows);
+            for(let i = 0; i < rows.length; i++) {
+                anzeigenListe.push(rows[i]);
+            }
+
         }
     });
 
@@ -265,32 +291,34 @@ app.get('/login', function (req, res) {
     console.log("YES");
 });
 
-app.post('/anmelden', function(req,res){
+app.post('/anmelden', function(req,rep){
 	userAnmelden = req.body["user"];
     let password = req.body["password"];
 
     console.log(userAnmelden);
     
     //Überprüft, ob der User in unserer Datenbank gespreichert ist
-    db.get(`SELECT * FROM USERS WHERE LOGIN`,(error,row)=>{
-            
+    db.all(`SELECT * FROM USERS WHERE LOGIN`,(error,row)=>{
         if(row != undefined){
-            console.log("Password: " + row.PASSWORD);
-			//Wenn ja, schau ob das Password richtig ist
-			if(password == row.PASSWORD){
-				//hat geklappt
-				// Sessionvariable setzen
-                req.session['user'] = userAnmelden;
-                console.log("User Found and password right");
-				res.redirect('/success');
+            for(let i = 0; i < row.length; i++) {
+                console.log("Password: " + row[i].PASSWORD);
+                //Wenn ja, schau ob das Password richtig ist
+                if(password == row[i].PASSWORD && userAnmelden == row[i].LOGIN ){
+                    //hat geklappt
+                    // Sessionvariable setzen
+                    req.session['user'] = userAnmelden;
+                    console.log("User Found and password right");
+                    rep.redirect('/success');
 //				res.render('success', {'user': user});
-			}else{
-				//hat nicht gklappt, weil Password falsch
-				res.render('error');
-			}
+                }else{
+                    //hat nicht gklappt, weil Password falsch
+                    rep.redirect('/errorLogin');
+                }
+            }
+
 		}else{
 			//hat es nicht geklappt, weil kein User mit dem namen
-			res.render('error');
+			rep.redirect('/errorLogin');
 		}
 		//Falls ein Fehler auftritt in der Abfrage, gebe ihn aus
 		if(error){
@@ -299,19 +327,28 @@ app.post('/anmelden', function(req,res){
 	});
 });
 
+app.get('/errorLogin', function(req, rep) {
+    console.log("Red");
+    rep.render('error', {});
+});
+
 app.get('/success', function(req, res){
 	if (!req.session['user']){
 		res.redirect('/login');
 	}
 	else{
 		const user = req.session['user'];
-		res.render('success', {'user': user});
+		res.render('succes', {'user': user});
 	}
 });
 
 app.get('/logout', function (req, res){
 	delete req.session['user'];
 	res.redirect('/login');
+});
+
+app.post('/registrierung', function (req, res) {
+    res.redirect('/');
 });
 
 app.get('/registration', (req, res)=>{
@@ -342,6 +379,7 @@ db.get(`SELECT * FROM USERS WHERE LOGIN='${user}'`,(error,row)=>{
     }
     res.redirect('/login');
     });
+
 });
 
     //Nach der Registrierung, wird man zu der Login Seite geführt
@@ -355,6 +393,10 @@ app.get('/userListe', function (req, rep) {
     console.log('rednering');
 });
 app.get('/anzeigenListe', function (req, res) {
+
+    for(let i = 0; i < anzeigenListe.length; i++) {
+        console.log(anzeigenListe[i].TITEL);
+    }
     res.render('anzeigenListe', {
         anzeigenListe: anzeigenListe
     });
